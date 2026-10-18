@@ -1,6 +1,5 @@
-flask
-spacy
+Flask
+gunicorn
 pdfplumber
 python-docx
 scikit-learn
-nltk
