@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Resume Analyzer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>AI Resume Analyzer with Skill Gap Detection</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            <textarea name="job_description" placeholder="Paste the job description here..."
+                required>{{ request.form.get("job_description", "") }}</textarea>
+
+            <input type="file" name="resume" accept=".pdf,.docx" required>
+
+            <button type="submit">Analyze Resume</button>
+        </form>
+
+        {% if result %}
+        <div class="card">
+
+            <h2>ATS Match Score: {{ result.ats_score }}</h2>
+            <h3>Skill Gap: {{ result.skill_gap }}%</h3>
+
+            <h3>Resume Skills</h3>
+            <p>{{ result.resume_skills }}</p>
+
+            <h3>Job description Skills</h3>
+            <p>{{ result.job_description_skills }}</p>
+
+            <h3>Missing Skills</h3>
+            <p>{{ result.missing_skills }}</p>
+
+        </div>
+        {% endif %}
+
+    </div>
+</body>
+
+</html>
