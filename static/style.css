@@ -39,3 +39,25 @@ button {
     margin-top: 20px;
     border-radius: 10px;
 }
+
+
+.upload-label,
+label[for="job_description"] {
+    display: block;
+    margin: 16px 0 8px;
+    font-weight: 600;
+}
+
+input[type="file"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.error-message {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 6px;
+    color: #b91c1c;
+    background: #fee2e2;
+}

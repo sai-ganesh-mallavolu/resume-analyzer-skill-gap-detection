@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Resume Analyzer</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
@@ -12,28 +14,52 @@
         <h1>AI Resume Analyzer with Skill Gap Detection</h1>
 
         <form method="POST" enctype="multipart/form-data">
-            <textarea name="job_description" placeholder="Paste the job description here..."
-                required>{{ request.form.get("job_description", "") }}</textarea>
 
-            <input type="file" name="resume" accept=".pdf,.docx" required>
+            <label for="job_description">Job Description</label>
+            <textarea id="job_description" name="job_description" placeholder="Paste the job description here..."
+                required>{{ job_description or "" }}</textarea>
+
+            <label for="resume" class="upload-label">Upload Resume</label>
+            <input type="file" id="resume" name="resume" accept=".pdf,.docx" required>
 
             <button type="submit">Analyze Resume</button>
+
         </form>
+
+        {% if error %}
+        <div class="error-message">
+            {{ error }}
+        </div>
+        {% endif %}
 
         {% if result %}
         <div class="card">
 
-            <h2>ATS Match Score: {{ result.ats_score }}</h2>
+            <h2>Resume Analysis Results</h2>
+
+            <h3>ATS Match Score: {{ result.ats_score }}%</h3>
             <h3>Skill Gap: {{ result.skill_gap }}%</h3>
 
             <h3>Resume Skills</h3>
-            <p>{{ result.resume_skills }}</p>
+            {% if result.resume_skills %}
+            <p>{{ result.resume_skills | join(", ") }}</p>
+            {% else %}
+            <p>No matching skills detected.</p>
+            {% endif %}
 
-            <h3>Job description Skills</h3>
-            <p>{{ result.job_description_skills }}</p>
+            <h3>Job Description Skills</h3>
+            {% if result.job_description_skills %}
+            <p>{{ result.job_description_skills | join(", ") }}</p>
+            {% else %}
+            <p>No skills from the predefined skill list were detected in the job description.</p>
+            {% endif %}
 
             <h3>Missing Skills</h3>
-            <p>{{ result.missing_skills }}</p>
+            {% if result.missing_skills %}
+            <p>{{ result.missing_skills | join(", ") }}</p>
+            {% else %}
+            <p>No missing skills detected from the predefined skill list.</p>
+            {% endif %}
 
         </div>
         {% endif %}
